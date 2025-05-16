@@ -1,0 +1,61 @@
+pipeline {
+  agent any
+
+  environment {
+    RAILS_ENV = 'test'
+    DOCKER_COMPOSE_VERSION = '2.21.0'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Docker Compose Build') {
+      steps {
+        sh 'docker-compose build'
+      }
+    }
+
+    stage('Setup Test Environment') {
+      steps {
+        sh '''
+          docker-compose run --rm web bundle install
+          docker-compose run --rm web bundle exec rails db:create db:migrate db:test:prepare
+        '''
+      }
+    }
+
+    stage('Run Tests') {
+      steps {
+        sh 'docker-compose run --rm web bundle exec rspec'
+      }
+    }
+
+    stage('Build and Push') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh '''
+          docker-compose build
+          docker tag backend-user-task-api_web:latest my-registry/backend-user-task-api:latest
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'docker-compose down'
+    }
+    success {
+      echo 'Pipeline completed successfully!'
+    }
+    failure {
+      echo 'Pipeline failed!'
+    }
+  }
+}

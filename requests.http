@@ -1,0 +1,91 @@
+### Get all users (Requires Authentication)
+GET http://localhost:3000/api/users
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+### Get specific user (Requires Authentication)
+GET http://localhost:3000/api/users/1
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+### Create new task (Requires Authentication)
+POST http://localhost:3000/api/tasks
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+    "task": {
+        "title": "Nueva tarea",
+        "description": "Descripción de la tarea",
+        "status": "pending"
+    }
+}
+
+### Update task (Requires Authentication)
+PUT http://localhost:3000/api/tasks/1
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+    "task": {
+        "status": "completed"
+    }
+}
+
+### Delete task (Requires Authentication)
+DELETE http://localhost:3000/api/tasks/1
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+### GraphQL - Get all users (Requires Authentication)
+POST http://localhost:3000/graphql
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+  "query": "query { users { id email fullName role tasks { id title status } } }"
+}
+
+### GraphQL - Get all tasks (Requires Authentication)
+POST http://localhost:3000/graphql
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+  "query": "query { tasks { id title description status dueDate user { id fullName } } }"
+}
+
+### GraphQL - Create task (Requires Authentication)
+POST http://localhost:3000/graphql
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+  "query": "mutation($title: String!, $description: String, $status: String!, $dueDate: ISO8601Date!, $userId: ID!) { createTask(input: { title: $title, description: $description, status: $status, dueDate: $dueDate, userId: $userId }) { id title status } }",
+  "variables": {
+    "title": "Nueva tarea GraphQL",
+    "description": "Descripción de la tarea GraphQL",
+    "status": "pending",
+    "dueDate": "2024-12-31",
+    "userId": "1"
+  }
+}
+
+### GraphQL - Update task (Requires Authentication)
+POST http://localhost:3000/graphql
+Authorization: Bearer test-token-123
+Content-Type: application/json
+
+{
+  "query": "mutation($id: ID!, $status: String) { updateTask(input: { id: $id, status: $status }) { id title status } }",
+  "variables": {
+    "id": "19",
+    "status": "completed"
+  }
+}
+
+### Note: Development test token: test-token-123
+### User credentials:
+### Email: test@example.com
+### Full Name: Test User
+### Role: admin
