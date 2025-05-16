@@ -46,6 +46,16 @@ docker-compose exec web rails db:seed
 docker-compose exec web rails db:setup 
 ```
 
+5. Access the Service:
+The API will be available at:
+```
+http://localhost:3000
+```
+
+You can test it using:
+- REST API endpoints at `http://localhost:3000/api/`
+- GraphQL playground at `http://localhost:3000/graphql`
+
 The seed data will create:
 - A test user with credentials listed in Authentication section
 - Sample tasks for testing
