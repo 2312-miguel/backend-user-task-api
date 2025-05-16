@@ -13,7 +13,7 @@ RESTful and GraphQL API for managing users and tasks, built with Ruby on Rails.
 
 1. Clone the repository:
 ```bash
-git clone [repository-url]
+git clone https://github.com/2312-miguel/backend-user-task-api.git
 cd backend-user-task-api
 ```
 
